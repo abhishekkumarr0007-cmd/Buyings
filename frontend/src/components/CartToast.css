@@ -1,0 +1,590 @@
+/* =========================================================
+   PREMIUM CART TOAST
+========================================================= */
+
+.premium-cart-toast-wrapper {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+
+    z-index: 99999;
+
+    width: min(430px, calc(100vw - 32px));
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.premium-cart-toast {
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns: 52px 72px 1fr;
+
+    column-gap: 14px;
+
+    align-items: center;
+
+    padding: 18px;
+
+    background: rgba(255, 255, 255, 0.98);
+
+    border: 1px solid rgba(20, 20, 20, 0.08);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        0 4px 18px rgba(0, 0, 0, 0.08);
+
+    backdrop-filter: blur(18px);
+
+    pointer-events: auto;
+
+    overflow: hidden;
+
+    animation:
+        cartToastEnter
+        0.45s
+        cubic-bezier(.22, 1, .36, 1)
+        forwards;
+}
+
+
+/* =========================================================
+   ENTER ANIMATION
+========================================================= */
+
+@keyframes cartToastEnter {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translateX(80px)
+            scale(0.94);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform:
+            translateX(0)
+            scale(1);
+
+    }
+}
+
+
+/* =========================================================
+   SUCCESS ICON
+========================================================= */
+
+.cart-toast-success {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+.cart-success-circle {
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #111;
+
+    animation:
+        successPop
+        0.5s
+        cubic-bezier(.175, .885, .32, 1.275)
+        0.15s
+        both;
+}
+
+
+@keyframes successPop {
+
+    0% {
+
+        opacity: 0;
+
+        transform: scale(0);
+
+    }
+
+    70% {
+
+        transform: scale(1.15);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform: scale(1);
+
+    }
+}
+
+
+.cart-check-icon {
+
+    width: 24px;
+    height: 24px;
+
+    fill: none;
+
+    stroke: white;
+
+    stroke-width: 2.5;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+}
+
+
+.cart-check-icon path {
+
+    stroke-dasharray: 30;
+
+    stroke-dashoffset: 30;
+
+    animation:
+        drawCheck
+        0.4s
+        ease
+        0.45s
+        forwards;
+
+}
+
+
+@keyframes drawCheck {
+
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
+
+.cart-toast-image {
+
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: #f5f5f5;
+
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+
+.cart-toast-image img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    padding: 5px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.cart-toast-content {
+
+    min-width: 0;
+
+    padding-right: 20px;
+}
+
+
+.cart-toast-label {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.4px;
+
+    color: #777;
+}
+
+
+.cart-toast-content h3 {
+
+    margin: 0;
+
+    font-size: 15px;
+
+    line-height: 1.35;
+
+    font-weight: 700;
+
+    color: #111;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.cart-toast-info {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 6px;
+
+    font-size: 12px;
+
+    color: #777;
+}
+
+
+.cart-toast-info strong {
+
+    color: #222;
+
+}
+
+
+.cart-toast-dot {
+
+    color: #bbb;
+}
+
+
+/* =========================================================
+   CLOSE
+========================================================= */
+
+.cart-toast-close {
+
+    position: absolute;
+
+    top: 10px;
+    right: 12px;
+
+    width: 26px;
+    height: 26px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    background: transparent;
+
+    color: #999;
+
+    font-size: 22px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.cart-toast-close:hover {
+
+    color: #111;
+
+    transform: rotate(90deg);
+
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.cart-toast-actions {
+
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 16px;
+
+    padding-top: 14px;
+
+    border-top: 1px solid #eeeeee;
+}
+
+
+.cart-toast-view {
+
+    flex: 1;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    height: 40px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #fed7aa;
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.cart-toast-view:hover {
+
+    background: #1c1ce4;
+
+    transform: translateY(-1px);
+
+}
+
+
+.cart-toast-view span {
+
+    font-size: 16px;
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.cart-toast-view:hover span {
+
+    transform: translateX(3px);
+
+}
+
+
+.cart-toast-continue {
+
+    flex: 1;
+
+    height: 40px;
+
+    border: 1px solid #dedede;
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: #333;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.cart-toast-continue:hover {
+
+    background: #f7f7f7;
+
+    border-color: #cfcfcf;
+
+}
+
+
+/* =========================================================
+   PROGRESS BAR
+========================================================= */
+
+.cart-toast-progress {
+
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+
+    height: 3px;
+
+    background: #eeeeee;
+}
+
+
+.cart-toast-progress div {
+
+    width: 100%;
+
+    height: 100%;
+
+    background: #111;
+
+    transform-origin: left;
+
+    animation:
+        cartToastProgress
+        4s
+        linear
+        forwards;
+}
+
+
+@keyframes cartToastProgress {
+
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .premium-cart-toast-wrapper {
+
+        top: 12px;
+        right: 12px;
+        left: 12px;
+
+        width: auto;
+
+    }
+
+
+    .premium-cart-toast {
+
+        grid-template-columns:
+            44px
+            60px
+            1fr;
+
+        padding: 14px;
+
+        border-radius: 15px;
+
+    }
+
+
+    .cart-success-circle {
+
+        width: 40px;
+        height: 40px;
+
+    }
+
+
+    .cart-check-icon {
+
+        width: 20px;
+        height: 20px;
+
+    }
+
+
+    .cart-toast-image {
+
+        width: 60px;
+        height: 60px;
+
+    }
+
+
+    .cart-toast-content h3 {
+
+        font-size: 13px;
+
+    }
+
+
+    .cart-toast-actions {
+
+        flex-direction: column;
+
+    }
+
+
+    .cart-toast-view,
+    .cart-toast-continue {
+
+        width: 100%;
+
+    }
+
+}

@@ -1,0 +1,20 @@
+package com.abhishek.ecom_proj.model;
+
+public enum ReturnStatus {
+
+    NONE,
+
+    RETURN_REQUESTED,
+    RETURN_APPROVED,
+    RETURN_REJECTED,
+    RETURN_PICKUP_SCHEDULED,
+    RETURN_RECEIVED,
+
+    EXCHANGE_REQUESTED,
+    EXCHANGE_APPROVED,
+    EXCHANGE_REJECTED,
+    EXCHANGE_RECEIVED,
+
+    REFUND_INITIATED,
+    REFUNDED
+}

@@ -1,0 +1,875 @@
+/* =========================================================
+   ADMIN CONTACT MESSAGES
+========================================================= */
+
+.admin-contact-page {
+    min-height: 100vh;
+    padding: 35px;
+    background: #f7f8fa;
+    color: #171717;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.admin-contact-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.admin-contact-eyebrow {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    color: #777;
+}
+
+.admin-contact-header h1 {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.admin-contact-header p {
+    margin: 8px 0 0;
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   REFRESH BUTTON
+========================================================= */
+
+.refresh-contact-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 18px;
+    border: 1px solid #dedede;
+    border-radius: 10px;
+    background: #fff;
+    color: #222;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.refresh-contact-button:hover {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+}
+
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+.contact-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.contact-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border: 1px solid #e7e7e7;
+    border-radius: 14px;
+    background: #fff;
+}
+
+.contact-stat-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 20px;
+}
+
+.contact-stat-icon.total {
+    background: #f1f1f1;
+}
+
+.contact-stat-icon.unread {
+    background: #fff3e8;
+}
+
+.contact-stat-icon.read {
+    background: #edf8f0;
+}
+
+.contact-stat-card span {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: #888;
+}
+
+.contact-stat-card strong {
+    display: block;
+    font-size: 25px;
+}
+
+
+/* =========================================================
+   MESSAGE CARD
+========================================================= */
+
+.contact-messages-card {
+    overflow: hidden;
+    border: 1px solid #e6e6e6;
+    border-radius: 16px;
+    background: #fff;
+}
+
+.contact-list-header {
+    padding: 22px 25px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.contact-list-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.contact-list-header p {
+    margin: 5px 0 0;
+    color: #888;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   MESSAGE LIST
+========================================================= */
+
+.contact-message-list {
+    width: 100%;
+}
+
+.contact-message-row {
+    display: grid;
+    grid-template-columns:
+        25px
+        1.1fr
+        1fr
+        1.5fr
+        145px
+        125px;
+
+    align-items: center;
+    gap: 18px;
+
+    padding: 18px 25px;
+
+    border-bottom: 1px solid #eeeeee;
+
+    transition: background 0.2s ease;
+}
+
+.contact-message-row:last-child {
+    border-bottom: none;
+}
+
+.contact-message-row:hover {
+    background: #fafafa;
+}
+
+.contact-message-row.unread-message {
+    background: #fcfcfc;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.message-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.unread-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #111;
+}
+
+.message-status i {
+    color: #aaa;
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   CUSTOMER
+========================================================= */
+
+.message-customer {
+    min-width: 0;
+}
+
+.message-customer strong {
+    display: block;
+    overflow: hidden;
+    margin-bottom: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.message-customer span {
+    display: block;
+    overflow: hidden;
+    color: #888;
+    font-size: 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+.category-badge {
+    display: inline-block;
+    max-width: 100%;
+    padding: 6px 9px;
+    border-radius: 7px;
+    background: #f1f1f1;
+    color: #555;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.category-order {
+    background: #fff1e8;
+}
+
+.category-payment {
+    background: #f2edff;
+}
+
+.category-delivery {
+    background: #eaf5ff;
+}
+
+.category-return {
+    background: #fff5dc;
+}
+
+.category-product {
+    background: #edf8ef;
+}
+
+
+/* =========================================================
+   MESSAGE PREVIEW
+========================================================= */
+
+.message-preview {
+    min-width: 0;
+}
+
+.message-preview p {
+    overflow: hidden;
+    margin: 0 0 5px;
+    color: #555;
+    font-size: 13px;
+    line-height: 1.5;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.order-reference {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #888;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.message-date {
+    color: #888;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.message-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px;
+}
+
+.message-actions button {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+
+    background: #fff;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.view-message-button:hover {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+}
+
+.read-message-button:hover {
+    background: #edf8f0;
+    border-color: #b7dfc0;
+}
+
+.delete-message-button:hover {
+    background: #fff0f0;
+    color: #d33;
+    border-color: #efbcbc;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-contact-state {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.empty-contact-icon {
+    width: 65px;
+    height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 18px;
+
+    border-radius: 50%;
+    background: #f3f3f3;
+
+    font-size: 25px;
+    color: #888;
+}
+
+.empty-contact-state h3 {
+    margin: 0 0 7px;
+    font-size: 18px;
+}
+
+.empty-contact-state p {
+    margin: 0;
+    color: #888;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.admin-contact-loading {
+    min-height: 60vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: #777;
+}
+
+.contact-spinner {
+    width: 34px;
+    height: 34px;
+
+    margin-bottom: 15px;
+
+    border: 3px solid #ddd;
+    border-top-color: #111;
+    border-radius: 50%;
+
+    animation: contactSpin 0.8s linear infinite;
+}
+
+@keyframes contactSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.admin-contact-error {
+    min-height: 60vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.error-icon {
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 15px;
+
+    border-radius: 50%;
+    background: #fff0f0;
+
+    color: #d33;
+    font-size: 24px;
+}
+
+.admin-contact-error h2 {
+    margin: 0 0 8px;
+}
+
+.admin-contact-error p {
+    margin: 0 0 20px;
+    color: #777;
+}
+
+.retry-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 11px 18px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #111;
+    color: #fff;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.contact-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.contact-modal {
+    width: 100%;
+    max-width: 700px;
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    border-radius: 18px;
+
+    background: #fff;
+
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+}
+
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.contact-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    padding: 25px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.contact-modal-header span {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #888;
+}
+
+.contact-modal-header h2 {
+    margin: 7px 0 0;
+    font-size: 22px;
+}
+
+.close-contact-modal {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+
+    background: #fff;
+
+    cursor: pointer;
+}
+
+.close-contact-modal:hover {
+    background: #111;
+    color: #fff;
+}
+
+
+/* =========================================================
+   MODAL BODY
+========================================================= */
+
+.contact-modal-body {
+    padding: 25px;
+}
+
+.detail-section {
+    margin-bottom: 25px;
+}
+
+.detail-section.full {
+    margin-bottom: 0;
+}
+
+.detail-label {
+    display: block;
+    margin-bottom: 9px;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+
+    color: #999;
+}
+
+
+/* =========================================================
+   CUSTOMER DETAIL
+========================================================= */
+
+.customer-detail {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.customer-avatar {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #111;
+    color: #fff;
+
+    font-weight: 700;
+}
+
+.customer-detail strong {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.customer-detail a {
+    color: #777;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.customer-detail a:hover {
+    color: #111;
+}
+
+
+/* =========================================================
+   DETAIL GRID
+========================================================= */
+
+.message-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+
+    padding: 20px 0;
+
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+
+    margin-bottom: 25px;
+}
+
+.message-detail-grid .detail-section {
+    margin-bottom: 0;
+}
+
+.message-detail-grid strong {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+
+.status-badge {
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border-radius: 7px;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status-unread {
+    background: #fff0e7;
+    color: #a74c17;
+}
+
+.status-read {
+    background: #edf8ef;
+    color: #347143;
+}
+
+
+/* =========================================================
+   FULL MESSAGE
+========================================================= */
+
+.full-message {
+    padding: 18px;
+
+    border: 1px solid #e7e7e7;
+    border-radius: 10px;
+
+    background: #fafafa;
+
+    color: #444;
+
+    font-size: 14px;
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+}
+
+
+/* =========================================================
+   MODAL FOOTER
+========================================================= */
+
+.contact-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    padding: 18px 25px;
+
+    border-top: 1px solid #eeeeee;
+}
+
+.reply-message-button,
+.modal-delete-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 10px 15px;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.reply-message-button {
+    border: 1px solid #111;
+    background: #111;
+    color: #fff;
+}
+
+.modal-delete-button {
+    border: 1px solid #efcaca;
+    background: #fff;
+    color: #c33;
+}
+
+.reply-message-button:hover {
+    background: #333;
+}
+
+.modal-delete-button:hover {
+    background: #fff2f2;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .contact-message-row {
+        grid-template-columns:
+            25px
+            1fr
+            1fr
+            1.5fr
+            100px
+            110px;
+
+        gap: 12px;
+    }
+
+}
+
+
+@media (max-width: 950px) {
+
+    .admin-contact-page {
+        padding: 20px;
+    }
+
+    .contact-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-message-row {
+        display: grid;
+
+        grid-template-columns:
+            25px
+            1fr
+            auto;
+
+        gap: 10px;
+    }
+
+    .message-category,
+    .message-preview,
+    .message-date {
+        grid-column: 2 / 3;
+    }
+
+    .message-actions {
+        grid-column: 3;
+        grid-row: 1 / span 4;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .admin-contact-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-contact-header h1 {
+        font-size: 28px;
+    }
+
+    .refresh-contact-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .contact-message-row {
+        padding: 16px;
+    }
+
+    .message-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-modal-overlay {
+        padding: 10px;
+    }
+
+    .contact-modal-header,
+    .contact-modal-body {
+        padding: 20px;
+    }
+
+    .contact-modal-footer {
+        padding: 15px 20px;
+        flex-wrap: wrap;
+    }
+
+}
