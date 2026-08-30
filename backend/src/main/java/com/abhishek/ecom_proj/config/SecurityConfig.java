@@ -51,7 +51,8 @@ public class SecurityConfig {
                 configuration.setAllowedOrigins(
                                 List.of(
                                                 "http://localhost:5173",
-                                                "http://localhost:3000"));
+                                                "http://localhost:3000",
+                                                "https://buyings-abhi.vercel.app"));
 
                 configuration.setAllowedMethods(
                                 List.of(
@@ -177,7 +178,6 @@ public class SecurityConfig {
 
                                                 // Admin-only return/exchange status update
                                                 // Admin-only return/exchange endpoints
-                                                
 
                                                 // All other order endpoints require login only
                                                 .requestMatchers("/orders/**")
