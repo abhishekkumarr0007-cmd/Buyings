@@ -11,7 +11,6 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 public class DatabaseConfig {
 
-```
 @Bean
 public DataSource dataSource() {
 
@@ -55,6 +54,5 @@ public DataSource dataSource() {
 
     return new HikariDataSource(config);
 }
-```
 
 }
