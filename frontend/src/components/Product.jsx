@@ -4,6 +4,9 @@ import AppContext from "../Context/Context";
 import axios from "../axios";
 import "./Product.css";
 
+const API_BASE_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 const Product = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -29,7 +32,7 @@ const Product = () => {
                 // ==========================================
 
                 const response = await axios.get(
-                    `http://localhost:8080/api/product/${id}`
+                    `/product/${id}`
                 );
 
                 const productData = response.data;
@@ -41,7 +44,7 @@ const Product = () => {
                 // ==========================================
 
                 const imageIdsResponse = await axios.get(
-                    `http://localhost:8080/api/product/${id}/images`
+                    `/product/${id}/images`
                 );
 
                 const imageIds = imageIdsResponse.data || [];
@@ -52,7 +55,7 @@ const Product = () => {
 
                 const urls = imageIds.map(
                     (imageId) =>
-                        `http://localhost:8080/api/product/image/${imageId}`
+                        `/product/image/${imageId}`
                 );
 
                 // ==========================================
@@ -64,7 +67,7 @@ const Product = () => {
                     productData.imageName
                 ) {
                     urls.push(
-                        `http://localhost:8080/api/product/${id}/image`
+                        `/product/${id}/image`
                     );
                 }
 
