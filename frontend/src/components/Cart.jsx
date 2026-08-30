@@ -6,12 +6,12 @@ import React, {
 } from "react";
 
 import AppContext from "../Context/Context";
-import axios from "axios";
+import axios from "../axios";
 import CheckoutPopup from "./CheckoutPopup";
 import { Button } from "react-bootstrap";
 import "./Cart.css";
 
-const API_URL = "http://localhost:8080";
+
 
 const Cart = () => {
   const {
@@ -65,9 +65,7 @@ const Cart = () => {
       }
 
       try {
-        const response = await axios.get(
-          `${API_URL}/api/products`
-        );
+        const response = await axios.get("/products");
 
         const backendProducts = response.data || [];
 
@@ -93,13 +91,12 @@ const Cart = () => {
             updatedCartItems.map(
               async (item) => {
                 try {
-                  const imageResponse =
-                    await axios.get(
-                      `${API_URL}/api/product/${item.id}/image`,
-                      {
-                        responseType: "blob",
-                      }
-                    );
+                  const imageResponse = await axios.get(
+                    `/product/${item.id}/image`,
+                    {
+                      responseType: "blob",
+                    }
+                  );
 
                   const imageUrl =
                     URL.createObjectURL(
@@ -432,7 +429,7 @@ const Cart = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/orders",
+        "/orders",
         requestBody,
         {
           headers: {
@@ -499,7 +496,7 @@ const Cart = () => {
       try {
         const response =
           await axios.post(
-            `${API_URL}/payment/create/${orderId}`,
+            `/payment/create/${orderId}`,
             {},
             {
               headers: {
@@ -583,7 +580,7 @@ const Cart = () => {
       try {
         const response =
           await axios.post(
-            `${API_URL}/payment/verify`,
+            `/payment/verify`,
             {
               razorpay_order_id:
                 razorpayOrderId,

@@ -27,77 +27,29 @@ const Product = () => {
             try {
                 setLoading(true);
 
-                // ==========================================
-                // GET PRODUCT
-                // ==========================================
-
-                const response = await axios.get(
-                    `/product/${id}`
-                );
+                // Get product details
+                const response = await axios.get(`/product/${id}`);
 
                 const productData = response.data;
-
                 setProduct(productData);
 
-                // ==========================================
-                // GET ALL IMAGE IDS
-                // ==========================================
+                // Use the same image endpoint that works on Home
+                const imageUrl = `${import.meta.env.VITE_API_URL ||
+                    "http://localhost:8080"
+                    }/api/product/${id}/image`;
 
-                const imageIdsResponse = await axios.get(
-                    `/product/${id}/images`
-                );
-
-                const imageIds = imageIdsResponse.data || [];
-
-                // ==========================================
-                // CREATE IMAGE URLS
-                // ==========================================
-
-                const urls = imageIds.map(
-                    (imageId) =>
-                        `/product/image/${imageId}`
-                );
-
-                // ==========================================
-                // FALLBACK TO OLD IMAGE
-                // ==========================================
-
-                if (
-                    urls.length === 0 &&
-                    productData.imageName
-                ) {
-                    urls.push(
-                        `/product/${id}/image`
-                    );
-                }
-
-                setImageUrls(urls);
-
-                if (urls.length > 0) {
-                    setSelectedImage(urls[0]);
-                }
+                setImageUrls([imageUrl]);
+                setSelectedImage(imageUrl);
 
             } catch (error) {
-
-                console.error(
-                    "Error fetching product:",
-                    error
-                );
-
+                console.error("Error fetching product:", error);
+                setProduct(null);
             } finally {
-
                 setLoading(false);
-
             }
         };
 
         fetchProduct();
-
-        return () => {
-            // Nothing to revoke because these are
-            // backend URLs, not blob URLs.
-        };
-
     }, [id]);
 
     const increaseQuantity = () => {
@@ -227,6 +179,7 @@ const Product = () => {
                                             "Failed to load image:",
                                             selectedImage
                                         );
+                                        e.currentTarget.style.display = "none";
                                     }}
                                 />
                             ) : (

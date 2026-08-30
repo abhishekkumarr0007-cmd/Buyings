@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import "./UserPages.css";
 
-const API = "http://localhost:8080";
 
 /* =========================================================
    DELIVERY STATUS STEPS
@@ -618,7 +617,7 @@ const MyOrders = () => {
             };
 
             await api.post(
-                "/api/contact",
+                "/contact",
                 messageData
             );
 
