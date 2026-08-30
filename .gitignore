@@ -19,7 +19,6 @@ backend/target/
 .env.*
 **/application-local.properties
 **/application-secret.properties
-backend/src/main/resources/application.properties
 
 # ==============================
 # IDE
