@@ -71,13 +71,6 @@ public class OrderController {
                         @RequestBody CreateOrderRequest request,
                         Authentication authentication) {
 
-                System.out.println("🔥🔥 CREATE ORDER CONTROLLER REACHED 🔥🔥");
-                System.out.println("Authentication: " + authentication);
-                System.out.println("Authenticated: " +
-                                (authentication != null && authentication.isAuthenticated()));
-                System.out.println("User: " +
-                                (authentication != null ? authentication.getName() : "NULL"));
-
                 checkAuthentication(authentication);
 
                 if (request == null) {
