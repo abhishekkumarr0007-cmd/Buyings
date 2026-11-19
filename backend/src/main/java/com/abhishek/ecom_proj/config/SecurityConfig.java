@@ -50,11 +50,13 @@ public class SecurityConfig {
 
                 CorsConfiguration configuration = new CorsConfiguration();
 
-                configuration.setAllowedOrigins(
+                configuration.setAllowedOriginPatterns(
                                 List.of(
+                                                "https://buyings-abhi.vercel.app",
+                                                "https://buyings-abhi-p7uxqgl5s-abhi-1c66.vercel.app",
+                                                "https://*.vercel.app",
                                                 "http://localhost:5173",
-                                                "http://localhost:3000",
-                                                "https://buyings-abhi.vercel.app"));
+                                                "http://localhost:3000"));
 
                 configuration.setAllowedMethods(
                                 List.of(
@@ -186,7 +188,7 @@ public class SecurityConfig {
                                                                 "/orders/**")
                                                 .authenticated()
 
-                                                .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()   
+                                                .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
 
                                                 // EVERYTHING ELSE
                                                 .anyRequest().authenticated())
