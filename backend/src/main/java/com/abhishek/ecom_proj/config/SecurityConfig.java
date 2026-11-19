@@ -172,15 +172,16 @@ public class SecurityConfig {
                                                 // ORDERS
                                                 // -------------------------------------------------
 
-                                                // Admin-only order endpoints
-                                                .requestMatchers("/orders/admin/**")
+                                                // ADMIN ORDER ENDPOINTS
+                                                .requestMatchers(
+                                                                "/api/orders/admin/**",
+                                                                "/orders/admin/**")
                                                 .hasRole("ADMIN")
 
-                                                // Admin-only return/exchange status update
-                                                // Admin-only return/exchange endpoints
-
-                                                // All other order endpoints require login only
-                                                .requestMatchers("/orders/**")
+                                                // ALL OTHER ORDER ENDPOINTS
+                                                .requestMatchers(
+                                                                "/api/orders/**",
+                                                                "/orders/**")
                                                 .authenticated()
 
                                                 // EVERYTHING ELSE
