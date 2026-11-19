@@ -231,7 +231,7 @@ const MyOrders = () => {
 
             setError("");
 
-            const response = await api.get("/orders/my-orders");
+            const response = await api.get("/api/orders/my-orders");
 
             console.log(
                 "MY ORDERS RESPONSE:",
