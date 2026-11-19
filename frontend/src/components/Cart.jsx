@@ -469,10 +469,7 @@ const Cart = () => {
         alert(error.message || "Unable to connect to the backend.");
       }
     }
-
-
     return null;
-  }
 };
 
 // =========================================================
