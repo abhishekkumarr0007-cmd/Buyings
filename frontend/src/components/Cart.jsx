@@ -447,32 +447,106 @@ const Cart = () => {
       console.log(response.data);
 
       return response.data;
-    } catch (error) {
-      console.error(
-        "ORDER CREATION ERROR:"
-      );
-
-      console.error(error);
+    }
+    catch (error) {
+      console.error("ORDER CREATION ERROR:", error);
 
       if (error.response) {
-        console.error(
-          "Status:",
-          error.response.status
-        );
+        console.error("Status:", error.response.status);
+        console.error("Response:", error.response.data);
 
-        console.error(
-          "Response:",
-          error.response.data
-        );
+        const data = error.response.data;
 
         alert(
-          error.response.data?.message ||
-          error.response.data ||
-          "Unable to create order."
+          typeof data === "string"
+            ? data
+            : data?.message ||
+            data?.error ||
+            JSON.stringify(data) ||
+            "Unable to create order."
+        );
+      } else {
+        alert(error.message || "Unable to connect to the backend.");
+      }
+    }
+
+
+    return null;
+  }
+};
+
+// =========================================================
+// CREATE RAZORPAY ORDER
+// =========================================================
+
+const createRazorpayOrder =
+  async (orderId) => {
+    const token = getToken();
+
+    if (!token) {
+      alert("Please login first.");
+      return null;
+    }
+
+    try {
+      const response =
+        await axios.post(
+          `/payment/create/${orderId}`,
+          {},
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+
+              "Content-Type":
+                "application/json",
+
+              Accept:
+                "application/json",
+            },
+          }
+        );
+
+      console.log(
+        "Razorpay order:",
+        response.data
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Razorpay order error:",
+        error
+      );
+
+      console.error(
+        "Status:",
+        error.response?.status
+      );
+
+      console.error(
+        "Backend response:",
+        error.response?.data
+      );
+
+      if (
+        error.response?.status ===
+        401
+      ) {
+        alert(
+          "Your login session has expired. Please login again."
+        );
+      } else if (
+        error.response?.status ===
+        403
+      ) {
+        alert(
+          "Access denied while creating Razorpay order. Please check your login."
         );
       } else {
         alert(
-          "Unable to connect to the backend."
+          error.response?.data?.message ||
+          "Unable to create Razorpay payment."
         );
       }
 
@@ -480,883 +554,804 @@ const Cart = () => {
     }
   };
 
-  // =========================================================
-  // CREATE RAZORPAY ORDER
-  // =========================================================
+// =========================================================
+// VERIFY RAZORPAY PAYMENT
+// =========================================================
 
-  const createRazorpayOrder =
-    async (orderId) => {
-      const token = getToken();
+const verifyRazorpayPayment =
+  async (
+    orderId,
+    razorpayOrderId,
+    razorpayPaymentId,
+    razorpaySignature
+  ) => {
+    const token = getToken();
 
-      if (!token) {
-        alert("Please login first.");
-        return null;
-      }
+    if (!token) {
+      alert("Please login first.");
+      return null;
+    }
 
-      try {
-        const response =
-          await axios.post(
-            `/payment/create/${orderId}`,
-            {},
-            {
-              headers: {
-                Authorization:
-                  `Bearer ${token}`,
+    try {
+      const response =
+        await axios.post(
+          `/payment/verify`,
+          {
+            razorpay_order_id:
+              razorpayOrderId,
 
-                "Content-Type":
-                  "application/json",
+            razorpay_payment_id:
+              razorpayPaymentId,
 
-                Accept:
-                  "application/json",
-              },
-            }
-          );
+            razorpay_signature:
+              razorpaySignature,
+          },
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
 
-        console.log(
-          "Razorpay order:",
-          response.data
-        );
+              "Content-Type":
+                "application/json",
 
-        return response.data;
-      } catch (error) {
-        console.error(
-          "Razorpay order error:",
-          error
-        );
-
-        console.error(
-          "Status:",
-          error.response?.status
-        );
-
-        console.error(
-          "Backend response:",
-          error.response?.data
-        );
-
-        if (
-          error.response?.status ===
-          401
-        ) {
-          alert(
-            "Your login session has expired. Please login again."
-          );
-        } else if (
-          error.response?.status ===
-          403
-        ) {
-          alert(
-            "Access denied while creating Razorpay order. Please check your login."
-          );
-        } else {
-          alert(
-            error.response?.data?.message ||
-            "Unable to create Razorpay payment."
-          );
-        }
-
-        return null;
-      }
-    };
-
-  // =========================================================
-  // VERIFY RAZORPAY PAYMENT
-  // =========================================================
-
-  const verifyRazorpayPayment =
-    async (
-      orderId,
-      razorpayOrderId,
-      razorpayPaymentId,
-      razorpaySignature
-    ) => {
-      const token = getToken();
-
-      if (!token) {
-        alert("Please login first.");
-        return null;
-      }
-
-      try {
-        const response =
-          await axios.post(
-            `/payment/verify`,
-            {
-              razorpay_order_id:
-                razorpayOrderId,
-
-              razorpay_payment_id:
-                razorpayPaymentId,
-
-              razorpay_signature:
-                razorpaySignature,
+              Accept:
+                "application/json",
             },
-            {
-              headers: {
-                Authorization:
-                  `Bearer ${token}`,
-
-                "Content-Type":
-                  "application/json",
-
-                Accept:
-                  "application/json",
-              },
-            }
-          );
-
-        console.log(
-          "Payment verified:",
-          response.data
-        );
-
-        return response.data;
-      } catch (error) {
-        console.error(
-          "Payment verification error:",
-          error
-        );
-
-        console.error(
-          "Status:",
-          error.response?.status
-        );
-
-        console.error(
-          "Backend response:",
-          error.response?.data
-        );
-
-        alert(
-          error.response?.data?.message ||
-          "Payment verification failed."
-        );
-
-        return null;
-      }
-    };
-
-  // =========================================================
-  // OPEN RAZORPAY CHECKOUT
-  // =========================================================
-
-  const openRazorpayCheckout =
-    async (order) => {
-      try {
-        if (
-          !checkoutInProgress.current
-        ) {
-          return;
-        }
-
-        if (!window.Razorpay) {
-          alert(
-            "Razorpay SDK is not loaded. Please refresh the page."
-          );
-
-          checkoutInProgress.current =
-            false;
-
-          setLoading(false);
-
-          return;
-        }
-
-        const razorpayData =
-          await createRazorpayOrder(
-            order.id
-          );
-
-        if (!razorpayData) {
-          checkoutInProgress.current =
-            false;
-
-          setLoading(false);
-
-          return;
-        }
-
-        console.log(
-          "Razorpay data:",
-          razorpayData
-        );
-
-        const options = {
-          key: razorpayData.key,
-
-          amount: Math.round(
-            Number(
-              razorpayData.amount
-            )
-          ),
-
-          currency:
-            razorpayData.currency ||
-            "INR",
-
-          name: "Buyings",
-
-          description:
-            `Order #${order.id}`,
-
-          order_id:
-            razorpayData.razorpayOrderId,
-
-          handler:
-            async function (
-              paymentResponse
-            ) {
-              console.log(
-                "Razorpay payment response:",
-                paymentResponse
-              );
-
-              const verifiedOrder =
-                await verifyRazorpayPayment(
-                  order.id,
-
-                  paymentResponse.razorpay_order_id,
-
-                  paymentResponse.razorpay_payment_id,
-
-                  paymentResponse.razorpay_signature
-                );
-
-              if (verifiedOrder) {
-                setSuccessOrderId(
-                  verifiedOrder.id
-                );
-
-                setSuccessPayment(true);
-
-                setShowSuccessModal(
-                  true
-                );
-
-                clearCart();
-
-                setCartItems([]);
-
-                setShowModal(false);
-
-                checkoutInProgress.current =
-                  false;
-
-                setLoading(false);
-              }
-            },
-
-          prefill: {
-            name:
-              order.userName ||
-              "",
-
-            email:
-              order.userEmail ||
-              "",
-          },
-
-          theme: {
-            color: "#3399cc",
-          },
-
-          modal: {
-            ondismiss:
-              function () {
-                console.log(
-                  "Razorpay checkout closed."
-                );
-
-                checkoutInProgress.current =
-                  false;
-
-                setLoading(false);
-              },
-          },
-        };
-
-        const razorpay =
-          new window.Razorpay(
-            options
-          );
-
-        razorpay.on(
-          "payment.failed",
-          function (
-            response
-          ) {
-            console.error(
-              "Razorpay payment failed:",
-              response.error
-            );
-
-            alert(
-              response.error
-                ?.description ||
-              "Payment failed. Please try again."
-            );
-
-            checkoutInProgress.current =
-              false;
-
-            setLoading(false);
           }
         );
 
-        razorpay.open();
-      } catch (error) {
-        console.error(
-          "Error opening Razorpay:",
-          error
-        );
+      console.log(
+        "Payment verified:",
+        response.data
+      );
 
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Payment verification error:",
+        error
+      );
+
+      console.error(
+        "Status:",
+        error.response?.status
+      );
+
+      console.error(
+        "Backend response:",
+        error.response?.data
+      );
+
+      alert(
+        error.response?.data?.message ||
+        "Payment verification failed."
+      );
+
+      return null;
+    }
+  };
+
+// =========================================================
+// OPEN RAZORPAY CHECKOUT
+// =========================================================
+
+const openRazorpayCheckout =
+  async (order) => {
+    try {
+      if (
+        !checkoutInProgress.current
+      ) {
+        return;
+      }
+
+      if (!window.Razorpay) {
         alert(
-          "Unable to open payment gateway."
+          "Razorpay SDK is not loaded. Please refresh the page."
         );
 
         checkoutInProgress.current =
           false;
 
         setLoading(false);
-      }
-    };
-
-  // =========================================================
-  // MAIN CHECKOUT
-  // =========================================================
-
-  const handleCheckout =
-    async (
-      paymentMethod,
-      addressData
-    ) => {
-      if (
-        checkoutInProgress.current ||
-        loading
-      ) {
-        console.log(
-          "Checkout already in progress. Preventing duplicate order."
-        );
 
         return;
       }
 
-      const token = getToken();
-
-      if (!token) {
-        alert(
-          "Please login before checkout."
+      const razorpayData =
+        await createRazorpayOrder(
+          order.id
         );
+
+      if (!razorpayData) {
+        checkoutInProgress.current =
+          false;
+
+        setLoading(false);
 
         return;
       }
 
-      if (
-        !cartItems ||
-        cartItems.length === 0
-      ) {
-        alert(
-          "Your cart is empty."
+      console.log(
+        "Razorpay data:",
+        razorpayData
+      );
+
+      const options = {
+        key: razorpayData.key,
+
+        amount: Math.round(
+          Number(
+            razorpayData.amount
+          )
+        ),
+
+        currency:
+          razorpayData.currency ||
+          "INR",
+
+        name: "Buyings",
+
+        description:
+          `Order #${order.id}`,
+
+        order_id:
+          razorpayData.razorpayOrderId,
+
+        handler:
+          async function (
+            paymentResponse
+          ) {
+            console.log(
+              "Razorpay payment response:",
+              paymentResponse
+            );
+
+            const verifiedOrder =
+              await verifyRazorpayPayment(
+                order.id,
+
+                paymentResponse.razorpay_order_id,
+
+                paymentResponse.razorpay_payment_id,
+
+                paymentResponse.razorpay_signature
+              );
+
+            if (verifiedOrder) {
+              setSuccessOrderId(
+                verifiedOrder.id
+              );
+
+              setSuccessPayment(true);
+
+              setShowSuccessModal(
+                true
+              );
+
+              clearCart();
+
+              setCartItems([]);
+
+              setShowModal(false);
+
+              checkoutInProgress.current =
+                false;
+
+              setLoading(false);
+            }
+          },
+
+        prefill: {
+          name:
+            order.userName ||
+            "",
+
+          email:
+            order.userEmail ||
+            "",
+        },
+
+        theme: {
+          color: "#3399cc",
+        },
+
+        modal: {
+          ondismiss:
+            function () {
+              console.log(
+                "Razorpay checkout closed."
+              );
+
+              checkoutInProgress.current =
+                false;
+
+              setLoading(false);
+            },
+        },
+      };
+
+      const razorpay =
+        new window.Razorpay(
+          options
         );
 
-        return;
-      }
-
-      if (!paymentMethod) {
-        alert(
-          "Please select a payment method."
-        );
-
-        return;
-      }
-
-      if (
-        !addressData ||
-        typeof addressData !== "object"
-      ) {
-        alert(
-          "Please enter your delivery address."
-        );
-
-        return;
-      }
-
-      checkoutInProgress.current =
-        true;
-
-      setLoading(true);
-
-      try {
-        const order =
-          await createBackendOrder(
-            paymentMethod,
-            addressData
+      razorpay.on(
+        "payment.failed",
+        function (
+          response
+        ) {
+          console.error(
+            "Razorpay payment failed:",
+            response.error
           );
 
-        if (!order) {
+          alert(
+            response.error
+              ?.description ||
+            "Payment failed. Please try again."
+          );
+
           checkoutInProgress.current =
             false;
 
           setLoading(false);
-
-          return;
         }
+      );
 
-        console.log(
-          "Created order:",
+      razorpay.open();
+    } catch (error) {
+      console.error(
+        "Error opening Razorpay:",
+        error
+      );
+
+      alert(
+        "Unable to open payment gateway."
+      );
+
+      checkoutInProgress.current =
+        false;
+
+      setLoading(false);
+    }
+  };
+
+// =========================================================
+// MAIN CHECKOUT
+// =========================================================
+
+const handleCheckout =
+  async (
+    paymentMethod,
+    addressData
+  ) => {
+    if (
+      checkoutInProgress.current ||
+      loading
+    ) {
+      console.log(
+        "Checkout already in progress. Preventing duplicate order."
+      );
+
+      return;
+    }
+
+    const token = getToken();
+
+    if (!token) {
+      alert(
+        "Please login before checkout."
+      );
+
+      return;
+    }
+
+    if (
+      !cartItems ||
+      cartItems.length === 0
+    ) {
+      alert(
+        "Your cart is empty."
+      );
+
+      return;
+    }
+
+    if (!paymentMethod) {
+      alert(
+        "Please select a payment method."
+      );
+
+      return;
+    }
+
+    if (
+      !addressData ||
+      typeof addressData !== "object"
+    ) {
+      alert(
+        "Please enter your delivery address."
+      );
+
+      return;
+    }
+
+    checkoutInProgress.current =
+      true;
+
+    setLoading(true);
+
+    try {
+      const order =
+        await createBackendOrder(
+          paymentMethod,
+          addressData
+        );
+
+      if (!order) {
+        checkoutInProgress.current =
+          false;
+
+        setLoading(false);
+
+        return;
+      }
+
+      console.log(
+        "Created order:",
+        order
+      );
+
+      if (
+        paymentMethod
+          .trim()
+          .toUpperCase() ===
+        "COD"
+      ) {
+        setSuccessOrderId(order.id);
+
+        setSuccessPayment(false);
+
+        setShowSuccessModal(true);
+
+        clearCart();
+
+        setCartItems([]);
+
+        setShowModal(false);
+
+        checkoutInProgress.current =
+          false;
+
+        setLoading(false);
+
+        return;
+      }
+
+      if (
+        paymentMethod
+          .trim()
+          .toUpperCase() ===
+        "UPI"
+      ) {
+        await openRazorpayCheckout(
           order
         );
 
-        if (
-          paymentMethod
-            .trim()
-            .toUpperCase() ===
-          "COD"
-        ) {
-          setSuccessOrderId(order.id);
-
-          setSuccessPayment(false);
-
-          setShowSuccessModal(true);
-
-          clearCart();
-
-          setCartItems([]);
-
-          setShowModal(false);
-
-          checkoutInProgress.current =
-            false;
-
-          setLoading(false);
-
-          return;
-        }
-
-        if (
-          paymentMethod
-            .trim()
-            .toUpperCase() ===
-          "UPI"
-        ) {
-          await openRazorpayCheckout(
-            order
-          );
-
-          return;
-        }
-
-        alert(
-          "Invalid payment method."
-        );
-
-        checkoutInProgress.current =
-          false;
-
-        setLoading(false);
-      } catch (error) {
-        console.error(
-          "Checkout error:",
-          error
-        );
-
-        alert(
-          error.response?.data?.message ||
-          "Something went wrong during checkout."
-        );
-
-        checkoutInProgress.current =
-          false;
-
-        setLoading(false);
-      }
-    };
-
-  // =========================================================
-  // OPEN CHECKOUT MODAL
-  // =========================================================
-
-  const handleOpenCheckout =
-    () => {
-      if (loading) {
         return;
       }
 
-      if (
-        !cartItems ||
-        cartItems.length === 0
-      ) {
-        alert(
-          "Your cart is empty."
-        );
+      alert(
+        "Invalid payment method."
+      );
 
-        return;
-      }
+      checkoutInProgress.current =
+        false;
 
-      setShowModal(true);
-    };
+      setLoading(false);
+    } catch (error) {
+      console.error(
+        "Checkout error:",
+        error
+      );
 
-  // =========================================================
-  // RENDER
-  // =========================================================
+      alert(
+        error.response?.data?.message ||
+        "Something went wrong during checkout."
+      );
 
-  return (
-    <div className="cart-page">
+      checkoutInProgress.current =
+        false;
 
-      {/* PAGE HEADER */}
-      <div className="cart-header">
-        <div>
-          <h2>Shopping Bag</h2>
-          {cartItems.length > 0 && (
-            <p>
-              {cartItems.length}{" "}
-              {cartItems.length === 1
-                ? "item"
-                : "items"}{" "}
-              in your bag
-            </p>
-          )}
-        </div>
+      setLoading(false);
+    }
+  };
 
+// =========================================================
+// OPEN CHECKOUT MODAL
+// =========================================================
+
+const handleOpenCheckout =
+  () => {
+    if (loading) {
+      return;
+    }
+
+    if (
+      !cartItems ||
+      cartItems.length === 0
+    ) {
+      alert(
+        "Your cart is empty."
+      );
+
+      return;
+    }
+
+    setShowModal(true);
+  };
+
+// =========================================================
+// RENDER
+// =========================================================
+
+return (
+  <div className="cart-page">
+
+    {/* PAGE HEADER */}
+    <div className="cart-header">
+      <div>
+        <h2>Shopping Bag</h2>
         {cartItems.length > 0 && (
-          <div className="cart-header-icon">
-            <i className="bi bi-bag-check-fill"></i>
-          </div>
+          <p>
+            {cartItems.length}{" "}
+            {cartItems.length === 1
+              ? "item"
+              : "items"}{" "}
+            in your bag
+          </p>
         )}
       </div>
 
-      {cartItems.length === 0 ? (
-        /* EMPTY CART */
-        <div className="cart-empty">
+      {cartItems.length > 0 && (
+        <div className="cart-header-icon">
+          <i className="bi bi-bag-check-fill"></i>
+        </div>
+      )}
+    </div>
 
-          <div className="empty-cart-icon">
-            <i className="bi bi-bag-x"></i>
+    {cartItems.length === 0 ? (
+      /* EMPTY CART */
+      <div className="cart-empty">
+
+        <div className="empty-cart-icon">
+          <i className="bi bi-bag-x"></i>
+        </div>
+
+        <h3>Your cart is empty</h3>
+
+        <p>
+          Looks like you haven't added
+          anything to your cart yet.
+        </p>
+
+      </div>
+    ) : (
+      <div className="cart-layout">
+
+        {/* CART ITEMS */}
+        <div className="cart-items-section">
+
+          <div className="cart-items-header">
+            <span>Product</span>
+            <span>Quantity</span>
+            <span>Total</span>
           </div>
 
-          <h3>Your cart is empty</h3>
+          <div className="cart-items-list">
+            {cartItems.map(
+              (item) => (
+                <div
+                  className="cart-item"
+                  key={item.id}
+                >
 
-          <p>
-            Looks like you haven't added
-            anything to your cart yet.
-          </p>
-
-        </div>
-      ) : (
-        <div className="cart-layout">
-
-          {/* CART ITEMS */}
-          <div className="cart-items-section">
-
-            <div className="cart-items-header">
-              <span>Product</span>
-              <span>Quantity</span>
-              <span>Total</span>
-            </div>
-
-            <div className="cart-items-list">
-              {cartItems.map(
-                (item) => (
-                  <div
-                    className="cart-item"
-                    key={item.id}
-                  >
-
-                    {/* IMAGE */}
-                    <div className="cart-product-image-wrapper">
-                      {item.imageUrl ? (
-                        <img
-                          src={
-                            item.imageUrl
-                          }
-                          alt={
-                            item.name
-                          }
-                          className="cart-item-image"
-                        />
-                      ) : (
-                        <div className="cart-image-unavailable">
-                          <i className="bi bi-image"></i>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* PRODUCT DETAILS */}
-                    <div className="cart-product-details">
-
-                      <span className="cart-product-brand">
-                        {item.brand}
-                      </span>
-
-                      <h3>
-                        {item.name}
-                      </h3>
-
-                      <div className="cart-product-price">
-                        ₹
-                        {Number(
-                          item.price
-                        ).toFixed(2)}
+                  {/* IMAGE */}
+                  <div className="cart-product-image-wrapper">
+                    {item.imageUrl ? (
+                      <img
+                        src={
+                          item.imageUrl
+                        }
+                        alt={
+                          item.name
+                        }
+                        className="cart-item-image"
+                      />
+                    ) : (
+                      <div className="cart-image-unavailable">
+                        <i className="bi bi-image"></i>
                       </div>
+                    )}
+                  </div>
 
-                    </div>
+                  {/* PRODUCT DETAILS */}
+                  <div className="cart-product-details">
 
-                    {/* QUANTITY */}
-                    <div className="cart-quantity-wrapper">
+                    <span className="cart-product-brand">
+                      {item.brand}
+                    </span>
 
-                      <button
-                        className="quantity-btn minus-btn"
-                        type="button"
-                        disabled={
-                          loading
-                        }
-                        onClick={() =>
-                          handleDecreaseQuantity(
-                            item.id
-                          )
-                        }
-                        aria-label="Decrease quantity"
-                      >
-                        <i className="bi bi-dash"></i>
-                      </button>
+                    <h3>
+                      {item.name}
+                    </h3>
 
-                      <span className="quantity-value">
-                        {item.quantity}
-                      </span>
-
-                      <button
-                        className="quantity-btn plus-btn"
-                        type="button"
-                        disabled={
-                          loading
-                        }
-                        onClick={() =>
-                          handleIncreaseQuantity(
-                            item.id
-                          )
-                        }
-                        aria-label="Increase quantity"
-                      >
-                        <i className="bi bi-plus"></i>
-                      </button>
-
-                    </div>
-
-                    {/* ITEM TOTAL */}
-                    <div className="cart-item-total">
+                    <div className="cart-product-price">
                       ₹
-                      {(
-                        Number(
-                          item.price
-                        ) *
-                        Number(
-                          item.quantity
-                        )
+                      {Number(
+                        item.price
                       ).toFixed(2)}
                     </div>
 
-                    {/* REMOVE */}
+                  </div>
+
+                  {/* QUANTITY */}
+                  <div className="cart-quantity-wrapper">
+
                     <button
-                      className="remove-btn"
+                      className="quantity-btn minus-btn"
                       type="button"
                       disabled={
                         loading
                       }
                       onClick={() =>
-                        handleRemoveFromCart(
+                        handleDecreaseQuantity(
                           item.id
                         )
                       }
-                      aria-label="Remove item"
+                      aria-label="Decrease quantity"
                     >
-                      <i className="bi bi-trash3"></i>
+                      <i className="bi bi-dash"></i>
+                    </button>
+
+                    <span className="quantity-value">
+                      {item.quantity}
+                    </span>
+
+                    <button
+                      className="quantity-btn plus-btn"
+                      type="button"
+                      disabled={
+                        loading
+                      }
+                      onClick={() =>
+                        handleIncreaseQuantity(
+                          item.id
+                        )
+                      }
+                      aria-label="Increase quantity"
+                    >
+                      <i className="bi bi-plus"></i>
                     </button>
 
                   </div>
-                )
-              )}
-            </div>
 
-          </div>
+                  {/* ITEM TOTAL */}
+                  <div className="cart-item-total">
+                    ₹
+                    {(
+                      Number(
+                        item.price
+                      ) *
+                      Number(
+                        item.quantity
+                      )
+                    ).toFixed(2)}
+                  </div>
 
-          {/* ORDER SUMMARY */}
-          <div className="cart-summary">
+                  {/* REMOVE */}
+                  <button
+                    className="remove-btn"
+                    type="button"
+                    disabled={
+                      loading
+                    }
+                    onClick={() =>
+                      handleRemoveFromCart(
+                        item.id
+                      )
+                    }
+                    aria-label="Remove item"
+                  >
+                    <i className="bi bi-trash3"></i>
+                  </button>
 
-            <div className="summary-header">
-              <h3>Order Summary</h3>
-            </div>
-
-            <div className="summary-row">
-              <span>
-                Subtotal
-              </span>
-
-              <strong>
-                ₹
-                {Number(
-                  totalPrice
-                ).toFixed(2)}
-              </strong>
-            </div>
-
-            <div className="summary-row">
-              <span>
-                Delivery
-              </span>
-
-              <span className="free-delivery">
-                FREE
-              </span>
-            </div>
-
-            <div className="summary-divider"></div>
-
-            <div className="summary-total">
-              <span>
-                Total
-              </span>
-
-              <strong>
-                ₹
-                {Number(
-                  totalPrice
-                ).toFixed(2)}
-              </strong>
-            </div>
-
-            <Button
-              className="checkout-btn"
-              onClick={
-                handleOpenCheckout
-              }
-              disabled={
-                loading ||
-                checkoutInProgress.current
-              }
-            >
-              {loading ? (
-                <>
-                  <span
-                    className="checkout-spinner"
-                  ></span>
-
-                  Processing...
-                </>
-              ) : (
-                <>
-                  Proceed to Checkout
-
-                  <i className="bi bi-arrow-right"></i>
-                </>
-              )}
-            </Button>
-
-            <div className="secure-checkout">
-              <i className="bi bi-shield-check"></i>
-
-              <span>
-                Secure checkout
-              </span>
-            </div>
-
+                </div>
+              )
+            )}
           </div>
 
         </div>
-      )}
 
-      {/* CHECKOUT POPUP */}
-      <CheckoutPopup
-        show={showModal}
-        handleClose={() => {
-          if (!loading) {
-            setShowModal(false);
-          }
-        }}
-        cartItems={cartItems}
-        totalPrice={totalPrice}
-        handleCheckout={
-          handleCheckout
-        }
-        loading={loading}
-      />
+        {/* ORDER SUMMARY */}
+        <div className="cart-summary">
 
-      {/* =========================================================
-          ORDER SUCCESS POPUP
-      ========================================================= */}
-
-      <div
-        className={`order-success-overlay ${showSuccessModal
-          ? "show"
-          : ""
-          }`}
-      >
-
-        <div className="order-success-popup">
-
-          <button
-            type="button"
-            className="success-popup-close"
-            onClick={() => {
-              setShowSuccessModal(
-                false
-              );
-
-              setSuccessOrderId(
-                null
-              );
-            }}
-          >
-            <i className="bi bi-x"></i>
-          </button>
-
-          <div className="success-icon">
-            <i className="bi bi-check-lg"></i>
+          <div className="summary-header">
+            <h3>Order Summary</h3>
           </div>
 
-          <h2>
-            {successPayment
-              ? "Payment Successful!"
-              : "Order Placed Successfully!"}
-          </h2>
-
-          <p>
-            {successPayment
-              ? "Your payment has been successfully received and your order is confirmed."
-              : "Thank you for your order. Your order has been successfully placed."}
-          </p>
-
-          <div className="success-order-number">
+          <div className="summary-row">
             <span>
-              Order
+              Subtotal
             </span>
 
             <strong>
-              #{successOrderId}
+              ₹
+              {Number(
+                totalPrice
+              ).toFixed(2)}
             </strong>
           </div>
 
-          <button
-            type="button"
-            className="success-close-btn"
-            onClick={() => {
-              setShowSuccessModal(
-                false
-              );
+          <div className="summary-row">
+            <span>
+              Delivery
+            </span>
 
-              setSuccessOrderId(
-                null
-              );
-            }}
+            <span className="free-delivery">
+              FREE
+            </span>
+          </div>
+
+          <div className="summary-divider"></div>
+
+          <div className="summary-total">
+            <span>
+              Total
+            </span>
+
+            <strong>
+              ₹
+              {Number(
+                totalPrice
+              ).toFixed(2)}
+            </strong>
+          </div>
+
+          <Button
+            className="checkout-btn"
+            onClick={
+              handleOpenCheckout
+            }
+            disabled={
+              loading ||
+              checkoutInProgress.current
+            }
           >
-            Continue Shopping
-            <i className="bi bi-arrow-right"></i>
-          </button>
+            {loading ? (
+              <>
+                <span
+                  className="checkout-spinner"
+                ></span>
+
+                Processing...
+              </>
+            ) : (
+              <>
+                Proceed to Checkout
+
+                <i className="bi bi-arrow-right"></i>
+              </>
+            )}
+          </Button>
+
+          <div className="secure-checkout">
+            <i className="bi bi-shield-check"></i>
+
+            <span>
+              Secure checkout
+            </span>
+          </div>
 
         </div>
 
       </div>
+    )}
+
+    {/* CHECKOUT POPUP */}
+    <CheckoutPopup
+      show={showModal}
+      handleClose={() => {
+        if (!loading) {
+          setShowModal(false);
+        }
+      }}
+      cartItems={cartItems}
+      totalPrice={totalPrice}
+      handleCheckout={
+        handleCheckout
+      }
+      loading={loading}
+    />
+
+    {/* =========================================================
+          ORDER SUCCESS POPUP
+      ========================================================= */}
+
+    <div
+      className={`order-success-overlay ${showSuccessModal
+        ? "show"
+        : ""
+        }`}
+    >
+
+      <div className="order-success-popup">
+
+        <button
+          type="button"
+          className="success-popup-close"
+          onClick={() => {
+            setShowSuccessModal(
+              false
+            );
+
+            setSuccessOrderId(
+              null
+            );
+          }}
+        >
+          <i className="bi bi-x"></i>
+        </button>
+
+        <div className="success-icon">
+          <i className="bi bi-check-lg"></i>
+        </div>
+
+        <h2>
+          {successPayment
+            ? "Payment Successful!"
+            : "Order Placed Successfully!"}
+        </h2>
+
+        <p>
+          {successPayment
+            ? "Your payment has been successfully received and your order is confirmed."
+            : "Thank you for your order. Your order has been successfully placed."}
+        </p>
+
+        <div className="success-order-number">
+          <span>
+            Order
+          </span>
+
+          <strong>
+            #{successOrderId}
+          </strong>
+        </div>
+
+        <button
+          type="button"
+          className="success-close-btn"
+          onClick={() => {
+            setShowSuccessModal(
+              false
+            );
+
+            setSuccessOrderId(
+              null
+            );
+          }}
+        >
+          Continue Shopping
+          <i className="bi bi-arrow-right"></i>
+        </button>
+
+      </div>
 
     </div>
-  );
+
+  </div>
+);
 };
 
 export default Cart;
