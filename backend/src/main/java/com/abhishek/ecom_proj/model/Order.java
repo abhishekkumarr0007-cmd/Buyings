@@ -453,6 +453,13 @@ public class Order {
     }
 
     public void setItems(List<OrderItem> items) {
-        this.items = items;
+        this.items.clear();
+
+        if (items != null) {
+            for (OrderItem item : items) {
+                item.setOrder(this);
+                this.items.add(item);
+            }
+        }
     }
 }
