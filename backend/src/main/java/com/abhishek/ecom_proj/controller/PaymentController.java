@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("/api/payment")
 @CrossOrigin
 public class PaymentController {
 
@@ -37,7 +37,7 @@ public class PaymentController {
     // CREATE RAZORPAY ORDER
     // ==========================================
 
-    @PostMapping("/api/create/{orderId}")
+    @PostMapping("/create/{orderId}")
     public ResponseEntity<?> createPaymentOrder(
             @PathVariable Long orderId,
             Authentication authentication) {
@@ -174,7 +174,7 @@ public class PaymentController {
     // VERIFY RAZORPAY PAYMENT
     // ==========================================
 
-    @PostMapping("/api/verify")
+    @PostMapping("/verify")
     public ResponseEntity<?> verifyPayment(
             @RequestBody Map<String, String> request,
             Authentication authentication) {
