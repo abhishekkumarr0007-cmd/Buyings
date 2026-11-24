@@ -488,7 +488,7 @@ const createRazorpayOrder =
     try {
       const response =
         await axios.post(
-          `/payment/create/${orderId}`,
+          `/api/payment/create/${orderId}`,
           {},
           {
             headers: {
