@@ -37,7 +37,7 @@ public class PaymentController {
     // CREATE RAZORPAY ORDER
     // ==========================================
 
-    @PostMapping("/create/{orderId}")
+    @PostMapping("/api/create/{orderId}")
     public ResponseEntity<?> createPaymentOrder(
             @PathVariable Long orderId,
             Authentication authentication) {
@@ -174,7 +174,7 @@ public class PaymentController {
     // VERIFY RAZORPAY PAYMENT
     // ==========================================
 
-    @PostMapping("/verify")
+    @PostMapping("/api/verify")
     public ResponseEntity<?> verifyPayment(
             @RequestBody Map<String, String> request,
             Authentication authentication) {

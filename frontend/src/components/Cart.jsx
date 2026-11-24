@@ -572,7 +572,7 @@ const verifyRazorpayPayment =
     try {
       const response =
         await axios.post(
-          `/payment/verify`,
+          `/api/payment/verify`,
           {
             razorpay_order_id:
               razorpayOrderId,
